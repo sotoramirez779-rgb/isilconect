@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ISIL Connect</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-mark">i</div>
+    <h1 class="login-title" id="loginTitle">Ingresa a ISIL Connect</h1>
+    <p class="login-sub" id="loginSub">Usa tu correo institucional para entrar a la red de tu comunidad ISIL.</p>
+
+    <div class="login-switch">
+      <button type="button" class="active" id="switchToLogin">Iniciar sesión</button>
+      <button type="button" id="switchToSignup">Crear cuenta</button>
+    </div>
+
+    <form id="loginForm" class="login-panel active" novalidate>
+      <div class="login-field">
+        <label for="loginEmail">Correo institucional</label>
+        <input id="loginEmail" type="email" placeholder="74003435@mail.isil.pe" autocomplete="username">
+      </div>
+      <div class="login-field">
+        <label for="loginPassword">Contraseña</label>
+        <input id="loginPassword" type="password" placeholder="••••••••" autocomplete="current-password">
+      </div>
+      <div class="login-error" id="loginError"></div>
+      <button type="submit" class="login-btn" id="loginBtn">Ingresar</button>
+    </form>
+
+    <form id="signupForm" class="login-panel" novalidate>
+      <div class="login-field">
+        <label for="signupName">Nombre completo</label>
+        <input id="signupName" type="text" placeholder="Ana Torres Vega" autocomplete="name">
+      </div>
+      <div class="login-field">
+        <label for="signupEmail">Correo institucional</label>
+        <input id="signupEmail" type="email" placeholder="74003435@mail.isil.pe" autocomplete="username">
+      </div>
+      <div class="login-field">
+        <label>¿Dónde estudias?</label>
+        <div class="login-switch" id="signupSchoolSwitch">
+          <button type="button" class="active" data-value="isil">Estudiante ISIL</button>
+          <button type="button" data-value="escuela_de_negocios">Escuela de Negocios</button>
+        </div>
+      </div>
+      <div class="login-field">
+        <label for="signupCareer" id="signupCareerLabel">Carrera</label>
+        <select id="signupCareer"><option value="">Selecciona tu carrera...</option></select>
+      </div>
+      <div class="login-field">
+        <label for="signupPassword">Crea una contraseña</label>
+        <input id="signupPassword" type="password" placeholder="Mínimo 8 caracteres" autocomplete="new-password">
+      </div>
+      <div class="login-error" id="signupError"></div>
+      <button type="submit" class="login-btn" id="signupBtn">Crear cuenta</button>
+    </form>
+
+    <div class="login-domain">Solo se aceptan correos <b>@mail.isil.pe</b></div>
+  </div>
+</div>
+
+<div id="appRoot">
+<div class="app">
+  <nav class="side">
+    <div class="brand">
+      <div class="brand-mark">i</div>
+      <div class="brand-name">ISIL Connect</div>
+    </div>
+
+    <a class="side-link active" data-view="inicio">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9h12v-9"/></svg>
+      Inicio
+    </a>
+    <a class="side-link" data-view="grupos">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 19c0-3 2.7-5 6-5s6 2 6 5"/><path d="M15 14.3c2.6.3 4.5 2 4.5 4.7"/></svg>
+      Grupos
+    </a>
+    <a class="side-link" data-view="eventos">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="6" width="16" height="14" rx="2"/><path d="M8 3v5M16 3v5M4 11h16"/></svg>
+      Eventos
+    </a>
+    <a class="side-link" data-view="noticias">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l14-6v14L3 15z"/><path d="M7 15v4a2 2 0 0 0 2 2h1"/></svg>
+      Noticias ISIL
+    </a>
+    <a class="side-link" data-view="mensajes">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v11H8l-4 4z"/></svg>
+      Mensajes
+    </a>
+
+    <div class="side-profile" id="sideProfileBtn" style="cursor:pointer;">
+      <div class="avatar">MF</div>
+      <div>
+        <div class="side-profile-name">María Fernanda</div>
+        <div class="side-profile-role">74210582@mail.isil.pe</div>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="tabs">
+      <div class="tab active" data-tabview="inicio">Inicio</div>
+      <div class="tab" data-tabview="grupos">Grupos</div>
+      <div class="tab" data-tabview="eventos">Eventos</div>
+      <div class="tab" data-tabview="noticias">Noticias ISIL</div>
+      <div class="tab" data-tabview="mensajes">Mensajes</div>
+      <div class="tab" data-tabview="perfil">Perfil</div>
+    </div>
+
+    <!-- INICIO -->
+    <section class="view active" id="view-inicio">
+      <div class="composer">
+        <div class="composer-top">
+          <div class="avatar" id="composerAvatar">MF</div>
+          <textarea id="composerInput" placeholder="¿Qué está pasando en tu carrera hoy?"></textarea>
+        </div>
+        <div class="composer-actions">
+          <div class="chip-row">
+            <span class="chip" id="composerCareerChip">🎓 Carrera</span>
+          </div>
+          <button class="btn-primary" id="publishBtn" disabled>Publicar</button>
+        </div>
+      </div>
+
+      <div id="feed"></div>
+    </section>
+
+    <!-- GRUPOS -->
+    <section class="view" id="view-grupos">
+      <button class="btn-outline" id="showCreateGroupBtn" style="width:auto; padding:9px 16px; margin-bottom:14px;">+ Crear grupo</button>
+      <div class="notice-composer" id="createGroupForm" style="display:none;">
+        <div class="notice-composer-title">Nuevo grupo</div>
+        <input id="newGroupName" type="text" placeholder="Nombre del grupo" class="notice-type" style="width:100%; margin-bottom:10px;">
+        <textarea id="newGroupDesc" placeholder="Descripción breve"></textarea>
+        <div class="notice-row" style="margin-top:10px;">
+          <select id="newGroupType" class="notice-type">
+            <option value="club">Club</option>
+            <option value="carrera">Carrera</option>
+            <option value="curso">Curso</option>
+            <option value="proyecto">Proyecto</option>
+          </select>
+          <button class="btn-primary" id="createGroupBtn">Crear</button>
+        </div>
+        <div class="login-error" id="createGroupError"></div>
+      </div>
+      <div id="groupsGrid" style="display:grid; grid-template-columns:1fr 1fr; gap:14px;"></div>
+    </section>
+
+    <!-- EVENTOS -->
+    <section class="view" id="view-eventos">
+      <button class="btn-outline" id="showCreateEventBtn" style="width:auto; padding:9px 16px; margin-bottom:14px;">+ Crear evento</button>
+      <div class="notice-composer" id="createEventForm" style="display:none;">
+        <div class="notice-composer-title">Nuevo evento</div>
+        <input id="newEventTitle" type="text" placeholder="Título del evento" class="notice-type" style="width:100%; margin-bottom:10px;">
+        <textarea id="newEventDesc" placeholder="Descripción"></textarea>
+        <input id="newEventLocation" type="text" placeholder="Lugar" class="notice-type" style="width:100%; margin:10px 0;">
+        <div class="notice-row">
+          <input id="newEventStart" type="datetime-local" class="notice-type" style="flex:1;">
+          <button class="btn-primary" id="createEventBtn">Crear</button>
+        </div>
+        <div class="login-error" id="createEventError"></div>
+      </div>
+      <div id="eventsList"></div>
+    </section>
+
+    <!-- NOTICIAS ISIL -->
+    <section class="view" id="view-noticias">
+      <div class="notice-composer">
+        <div class="notice-composer-title">Enviar un reclamo o consulta</div>
+        <div class="notice-composer-sub">Llega directo a Bienestar Estudiantil. Puedes revisar el estado más abajo.</div>
+        <div class="notice-row">
+          <select class="notice-type" id="noticeType">
+            <option value="reclamo">Reclamo</option>
+            <option value="sugerencia">Sugerencia</option>
+            <option value="consulta">Consulta</option>
+          </select>
+        </div>
+        <textarea id="noticeInput" placeholder="Cuéntanos qué pasó o qué necesitas resolver..."></textarea>
+        <div class="notice-composer-actions">
+          <button class="btn-primary" id="noticeBtn" disabled>Enviar</button>
+        </div>
+      </div>
+
+      <div class="mine-heading">Tus envíos</div>
+      <div id="myNotices"></div>
+
+      <div class="mine-heading">Comunicados de ISIL</div>
+      <div id="officialNotices"></div>
+    </section>
+
+    <!-- MENSAJES -->
+    <section class="view" id="view-mensajes">
+      <div class="notice-composer">
+        <div class="notice-composer-title">Escribir a alguien nuevo</div>
+        <div class="notice-composer-sub">Escribe su nombre de usuario exacto (la parte antes de la @ en su correo institucional).</div>
+        <div class="notice-row">
+          <input id="dmUsername" type="text" placeholder="ej. 74003435" class="notice-type" style="flex:1;">
+          <button class="btn-primary" id="dmStartBtn">Iniciar chat</button>
+        </div>
+        <div class="login-error" id="dmError"></div>
+      </div>
+
+      <div id="conversationsList"></div>
+
+      <div id="chatThread" style="display:none;">
+        <div class="mine-heading" id="chatWithName">Chat</div>
+        <div id="chatMessages" style="max-height:340px; overflow-y:auto; margin-bottom:12px;"></div>
+        <div class="notice-row">
+          <textarea id="chatInput" placeholder="Escribe un mensaje..." style="flex:1; min-height:44px;"></textarea>
+          <button class="btn-primary" id="chatSendBtn">Enviar</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PERFIL -->
+    <section class="view" id="view-perfil">
+      <div class="notice-composer" style="text-align:center;">
+        <div class="avatar" id="profileAvatarPreview" style="width:84px; height:84px; font-size:28px; margin:0 auto 14px; background:var(--violet);">MF</div>
+        <input type="file" id="profileAvatarFile" accept="image/*" style="margin-bottom:6px;">
+        <div style="font-size:12px; color:var(--ink-soft);">JPG o PNG, máx. 2MB</div>
+      </div>
+      <div class="notice-composer">
+        <div class="notice-composer-title">Tu información</div>
+        <div class="login-field">
+          <label for="profileName">Nombre completo</label>
+          <input id="profileName" type="text">
+        </div>
+        <div class="login-field">
+          <label>¿Dónde estudias?</label>
+          <div class="login-switch" id="profileSchoolSwitch">
+            <button type="button" class="active" data-value="isil">Estudiante ISIL</button>
+            <button type="button" data-value="escuela_de_negocios">Escuela de Negocios</button>
+          </div>
+        </div>
+        <div class="login-field">
+          <label for="profileCareer">Carrera</label>
+          <select id="profileCareer"><option value="">Selecciona tu carrera...</option></select>
+        </div>
+        <div class="login-field">
+          <label for="profileBio">Bio</label>
+          <textarea id="profileBio" placeholder="Cuéntanos algo sobre ti..."></textarea>
+        </div>
+        <div class="notice-composer-actions">
+          <button class="btn-primary" id="saveProfileBtn">Guardar cambios</button>
+        </div>
+        <div class="login-error" id="profileError"></div>
+        <div id="profileSuccess" style="font-size:12.5px; color:var(--green); text-align:right; min-height:16px;"></div>
+      </div>
+    </section>
+  </main>
+
+  <aside class="right">
+    <div class="side-heading">Próximos eventos</div>
+    <div id="eventsSidebar"></div>
+
+    <div class="side-heading" style="margin-top:22px;">Grupos sugeridos</div>
+    <div id="groupsSidebar"></div>
+  </aside>
+</div>
+
+<nav class="mobile-tabbar">
+  <a class="side-link active" data-view="inicio">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9h12v-9"/></svg>
+    Inicio
+  </a>
+  <a class="side-link" data-view="grupos">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 19c0-3 2.7-5 6-5s6 2 6 5"/><path d="M15 14.3c2.6.3 4.5 2 4.5 4.7"/></svg>
+    Grupos
+  </a>
+  <a class="side-link" data-view="eventos">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="6" width="16" height="14" rx="2"/><path d="M8 3v5M16 3v5M4 11h16"/></svg>
+    Eventos
+  </a>
+  <a class="side-link" data-view="noticias">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l14-6v14L3 15z"/><path d="M7 15v4a2 2 0 0 0 2 2h1"/></svg>
+    Noticias
+  </a>
+  <a class="side-link" data-view="mensajes">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v11H8l-4 4z"/></svg>
+    Mensajes
+  </a>
+  <a class="side-link" data-view="perfil">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-4 3.5-6 7-6s7 2 7 6"/></svg>
+    Perfil
+  </a>
+</nav>
+</div>
+
+<div id="toast"></div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
